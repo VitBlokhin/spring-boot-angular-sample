@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/*");
+    }
+
+    @Override
     public void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
@@ -43,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/*.js", "/*.js.map", API_URL + LOGIN_ENDPOINT).permitAll()
                 .antMatchers(API_URL).permitAll()
+                .antMatchers(API_URL + LOGIN_ENDPOINT).permitAll()
                 .antMatchers(HttpMethod.POST, API_URL + "/user").anonymous()
                 .antMatchers(API_URL + ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(API_URL + PROTECTED_ENDPOINT).hasRole("USER")

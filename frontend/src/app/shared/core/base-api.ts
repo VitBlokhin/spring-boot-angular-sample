@@ -6,7 +6,7 @@ import { isNullOrUndefined } from "util";
 
 @Injectable()
 export class BaseApi {
-  private baseUrl = '/api/v1/';
+  private baseUrl = 'http://localhost:8080/api/v1/';
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
